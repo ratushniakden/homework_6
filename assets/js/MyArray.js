@@ -4,19 +4,18 @@ class MyArray {
   constructor() {
     this.length = 0;
   }
-  push() {
-    for (let i = 0; i < arguments.length; i++) {
-      this[this.length++] = arguments[i];
-      return this.length;
+  push(...args) {
+    for (const item of args) {
+      this[this.length++] = item;
     }
+    return this.length;
   }
 
   pop() {
-    const lastIndex = this.length - 1;
-    const lastItem = this[lastIndex];
-    delete this[lastIndex];
+    const lastElement = this[this.length - 1];
+    delete this[this.length - 1];
     --this.length;
-    return lastItem;
+    return lastElement;
   }
 
   forEach(callback) {
@@ -63,31 +62,33 @@ class MyArray {
   }
 
   shift() {
-    const { length } = this;
-    const firstValue = this[0];
-
-    for (let i = 1; i < length; i++) {
-      const value = this[i];
-      this[i - 1] = value;
+    if (this.length === 0) {
+      return;
     }
 
-    this.length = length - 1;
-    return firstValue;
+    const deletedElement = this[0];
 
-    
-    // let firstElement = this[0];
-    // delete this[0];
-    // --this.length;
-    // for (let i = 1; i < length; i++) {
-    //   const value = this[i];
-    //   this[i - 1] = value;
-    // }
-    // this.length = length - 1;
-    // return firstElement;
+    for (let i = 0; i < this.length; i++) {
+      this[i] = this[i + 1];
+    }
+
+    delete this[this.length - 1];
+    this.length--;
+    return deletedElement;
   }
 
-  unshift(...elements) {
-    elements.forEach((element) => this.push(element));
+  unshift(...items) {
+    const newLength = this.length + items.length;
+
+    for (let i = newLength; i > items.length; i--) {
+      this[i - 1] = this[i - items.length - 1];
+    }
+
+    for (let i = 0; i < items.length; i++) {
+      this[i] = items[i];
+    }
+
+    this.length = newLength;
     return this.length;
   }
 }

@@ -11,6 +11,12 @@ class RangeValidator {
   }
 
   set from(from) {
+    if (typeof from !== "number") {
+      throw new SyntaxError("input value should be an integer");
+    }
+    if (from > this.to) {
+      throw new RangeError("FROM is larger than TO");
+    }
     this._from = from;
   }
 
@@ -19,6 +25,12 @@ class RangeValidator {
   }
 
   set to(to) {
+    if (typeof to !== "number") {
+      throw new SyntaxError("input value should be an integer");
+    }
+    if (to < this.from) {
+      throw new RangeError("TO is smaller than FROM");
+    }
     this._to = to;
   }
 
